@@ -6,10 +6,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
-      MYSQL_DATABASE: ${DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sdtodb
+      MYSQL_USER: sdto
+      MYSQL_PASSWORD: sdto@pass
       TZ: 'America/Sao_Paulo'
     volumes:
       - mysql-db:/var/lib/mysql
