@@ -8,7 +8,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: 'root',
   password: 'root',
   database: 'sdtodb',
-  entities: [],
+  entities: [__dirname + '/../**/*.{ts,js}'],
   synchronize: false,
   dropSchema: false,
   migrationsRun: false,
