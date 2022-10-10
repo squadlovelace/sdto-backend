@@ -1,14 +1,16 @@
-import { BloodTypes } from '../../../shared/blood-types.enum';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   OneToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
+import { BloodTypes } from '../../../shared/blood-types.enum';
 import { Profile } from './profile';
 import { Responsible } from './responsible';
 import { Address } from './address';
+import { Receiver } from './receiver';
 
 @Entity()
 export class User {
@@ -56,6 +58,13 @@ export class User {
     cascade: true,
   })
   address: Address;
+
+  @OneToOne(() => Receiver, (receiver) => receiver.user, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  })
+  receiver: Receiver;
 
   @OneToOne(() => Responsible, (responsible) => responsible.user, {
     onDelete: 'CASCADE',
