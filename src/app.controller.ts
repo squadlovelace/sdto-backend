@@ -1,9 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
 
-@Controller('api')
+@ApiTags('Health Check')
+@Controller('api/health')
 export class HealthCheckController {
-  @Get('version')
-  version() {
-    return { APIVersion: '0.0.1' };
+  constructor(private health: HealthCheckService) {}
+
+  @ApiOperation({ summary: 'Verifica o status da API' })
+  @ApiResponse({ status: 200 })
+  @Get()
+  @HealthCheck()
+  check() {
+    return this.health.check([]);
   }
 }
