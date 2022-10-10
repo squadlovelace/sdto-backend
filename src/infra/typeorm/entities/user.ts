@@ -42,15 +42,24 @@ export class User {
   @Column({ nullable: false, type: 'enum', enum: BloodTypes })
   bloodType: BloodTypes;
 
-  @OneToOne(() => Profile, (profile) => profile.user, { onDelete: 'CASCADE' })
+  @OneToOne(() => Profile, (profile) => profile.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    eager: true,
+  })
   @JoinColumn()
   profile: Profile;
 
-  @OneToOne(() => Address, (address) => address.user, { onDelete: 'CASCADE' })
+  @OneToOne(() => Address, (address) => address.user, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  })
   address: Address;
 
   @OneToOne(() => Responsible, (responsible) => responsible.user, {
-    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
     eager: true,
     nullable: true,
   })
