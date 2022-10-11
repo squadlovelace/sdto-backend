@@ -11,6 +11,7 @@ import { Profile } from './profile';
 import { Responsible } from './responsible';
 import { Address } from './address';
 import { Receiver } from './receiver';
+import { Collaborator } from './collaborator';
 
 @Entity()
 export class User {
@@ -65,6 +66,13 @@ export class User {
     cascade: true,
   })
   receiver: Receiver;
+
+  @OneToOne(() => Collaborator, (collaborator) => collaborator.user, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  })
+  collaborator: Collaborator;
 
   @OneToOne(() => Responsible, (responsible) => responsible.user, {
     onDelete: 'CASCADE',

@@ -5,6 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
+import { Institution } from './institution';
 import { User } from './user';
 
 @Entity()
@@ -40,4 +41,12 @@ export class Address {
   })
   @JoinColumn()
   user: User;
+
+  @OneToOne(() => Institution, (institution) => institution.address, {
+    nullable: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn()
+  institution: Institution;
 }
