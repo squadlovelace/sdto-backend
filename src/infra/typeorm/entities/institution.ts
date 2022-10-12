@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -19,7 +20,7 @@ export class Institution {
   @Column({ nullable: false, type: 'varchar', length: 14 })
   cnpj: string;
 
-  @ManyToOne(() => Collaborator, (collaborator) => collaborator.institution, {
+  @OneToMany(() => Collaborator, (collaborator) => collaborator.institution, {
     eager: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
