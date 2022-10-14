@@ -14,7 +14,7 @@ export class Collaborator {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 8 })
+  @Column({ nullable: true, type: 'varchar', length: 8 })
   crm: string;
 
   @Column({ type: 'varchar', length: 64 })

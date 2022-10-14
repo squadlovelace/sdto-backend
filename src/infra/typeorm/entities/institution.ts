@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -25,7 +24,7 @@ export class Institution {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  collaborator: Collaborator;
+  collaborator: Collaborator[];
 
   @OneToOne(() => Address, (address) => address.institution, {
     nullable: true,

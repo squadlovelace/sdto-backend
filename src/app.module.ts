@@ -6,6 +6,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { HealthCheckController } from './app.controller';
 import { CollaboratorModule } from './modules/collaborator/collaborator.module';
+import { InstitutionModule } from './modules/institution/institution.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CollaboratorModule } from './modules/collaborator/collaborator.module';
     TerminusModule,
     HttpModule,
     CollaboratorModule,
+    InstitutionModule,
   ],
   controllers: [HealthCheckController],
   providers: [],

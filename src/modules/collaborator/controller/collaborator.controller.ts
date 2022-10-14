@@ -8,7 +8,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Put,
+  Put
 } from '@nestjs/common';
 import { CollaboratorService } from '../services/collaborator.service';
 
