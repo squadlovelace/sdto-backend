@@ -61,9 +61,7 @@ export class InstitutionService {
       institutionEntity.collaborator = [savedCollaborator];
       institutionEntity.address = savedAddress;
 
-      const savedInstitutional = await queryRunner.manager.save(
-        institutionEntity,
-      );
+      const savedInstitutional = await queryRunner.manager.save(institutionEntity);
       await queryRunner.commitTransaction();
       return savedInstitutional;
     } catch (error) {
@@ -73,10 +71,6 @@ export class InstitutionService {
     } finally {
       queryRunner.release();
     }
-
-    // return await this.institutionRepository.save(
-    //   this.institutionRepository.create(data),
-    // );
   }
 
   async update(id: string, data: any): Promise<Institution> {
