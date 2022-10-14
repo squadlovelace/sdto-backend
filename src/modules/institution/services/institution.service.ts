@@ -4,13 +4,14 @@ import { Institution } from 'src/infra/typeorm/entities/institution';
 import { Repository, QueryRunner, Connection } from 'typeorm';
 import { CreateInstitutionalDto } from '../dto/create-institutional.dto';
 import { Address } from 'src/infra/typeorm/entities/address';
+import { Collaborator } from 'src/infra/typeorm/entities/collaborator';
 
 @Injectable()
 export class InstitutionService {
   constructor(
     @InjectRepository(Institution)
     private readonly institutionRepository: Repository<Institution>,
-    private readonly connection: Connection
+    private readonly connection: Connection,
   ) {}
 
   async findAll(): Promise<Institution[]> {
@@ -39,31 +40,39 @@ export class InstitutionService {
         city: data.address.city,
         state: data.address.state,
         number: data.address.number,
-        zipcode: data.address.zipcode
-      })
+        zipcode: data.address.zipcode,
+      });
 
       const savedAddress = await queryRunner.manager.save(address);
+
+      const collaborator: Collaborator = queryRunner.manager.create(
+        Collaborator,
+        {
+          crm: data.collaborator.crm,
+          position: data.collaborator.position,
+        },
+      );
+
+      const savedCollaborator = await queryRunner.manager.save(collaborator);
 
       const institutionEntity = new Institution();
       institutionEntity.companyName = data.companyName;
       institutionEntity.cnpj = data.cnpj;
+      institutionEntity.collaborator = [savedCollaborator];
       institutionEntity.address = savedAddress;
 
-      const savedInstitutional = await queryRunner.manager.save(institutionEntity);
+      const savedInstitutional = await queryRunner.manager.save(
+        institutionEntity,
+      );
       await queryRunner.commitTransaction();
       return savedInstitutional;
-      
     } catch (error) {
       if (queryRunner.isTransactionActive) {
-        await queryRunner.rollbackTransaction()
+        await queryRunner.rollbackTransaction();
       }
     } finally {
       queryRunner.release();
     }
-
-
-
-
 
     // return await this.institutionRepository.save(
     //   this.institutionRepository.create(data),

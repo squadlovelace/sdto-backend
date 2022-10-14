@@ -8,10 +8,14 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Put
+  Put,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 import { CollaboratorService } from '../services/collaborator.service';
+import { Collaborator } from 'src/infra/typeorm/entities/collaborator';
 
+@ApiTags('Colaborador')
 @Controller('api/v1/collaborator')
 export class CollaboratorController {
   constructor(private readonly collaboratorService: CollaboratorService) {}
@@ -21,8 +25,11 @@ export class CollaboratorController {
     return await this.collaboratorService.findAll();
   }
 
+  @ApiOperation({
+    summary: 'Cria um colaborador',
+  })
   @Post()
-  async create(@Body() body) {
+  async create(@Body() body: CreateCollaboratorDto): Promise<Collaborator> {
     return await this.collaboratorService.create(body);
   }
 
