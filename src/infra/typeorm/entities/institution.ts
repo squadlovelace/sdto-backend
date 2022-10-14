@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Address } from './address';
 import { Collaborator } from './collaborator';
+import { Donor } from './donor';
 
 @Entity()
 export class Institution {
@@ -33,4 +34,12 @@ export class Institution {
     cascade: true,
   })
   address: Address;
+
+  @OneToMany(()=> Donor, (donor) => donor.institution,{
+    eager: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  donor: Donor;
+
 }
