@@ -4,11 +4,11 @@ dotenv.config();
 
 export const connectionSource = new DataSource({
   type: 'mysql',
-  host: 'localhost',
-  port: 3306,
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT),
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: 'sdtodb',
+  database: process.env.DATABASE,
   logging: true,
   synchronize: false,
   entities: ['src/infra/typeorm/entities/*.ts'],
