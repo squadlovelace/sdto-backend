@@ -2,8 +2,10 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
   OneToOne,
+  ManyToMany,
+  JoinColumn,
+  JoinTable,
 } from 'typeorm';
 import { Organ } from './organ';
 import { User } from './user';
@@ -19,12 +21,12 @@ export class Receiver {
   @Column({ nullable: true, type: 'varchar', length: 128 })
   comorbidity: string;
 
-  @ManyToOne(() => Organ, (organ) => organ.receiver, {
+  @ManyToMany(() => Organ, (organ) => organ.receiver, {
     eager: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+    cascade: true,
   })
-  organ: Organ;
+  @JoinTable()
+  organ: Organ[];
 
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,

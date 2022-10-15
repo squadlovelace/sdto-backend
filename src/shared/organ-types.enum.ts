@@ -1,4 +1,4 @@
 export enum OrganTypes {
-  ORGANS = 'ORGANS',
-  TISSUES = 'TISSUES',
+  ORGAN = 'ORGAN',
+  TISSUE = 'TISSUE',
 }

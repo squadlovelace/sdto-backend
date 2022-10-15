@@ -5,10 +5,12 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { HealthCheckController } from './app.controller';
+import { OrganModule } from './modules/organ/organ.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
+    OrganModule,
     TerminusModule,
     HttpModule,
   ],
