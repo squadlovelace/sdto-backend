@@ -7,11 +7,12 @@ import { HttpModule } from '@nestjs/axios';
 import { HealthCheckController } from './app.controller';
 import { CollaboratorModule } from './modules/collaborator/collaborator.module';
 import { InstitutionModule } from './modules/institution/institution.module';
-
+import { OrganModule } from './modules/organ/organ.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     UserModule,
+    OrganModule,
     TerminusModule,
     HttpModule,
     CollaboratorModule,
