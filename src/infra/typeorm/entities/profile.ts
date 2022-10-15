@@ -1,5 +1,5 @@
 import { ProfileTypes } from '../../../shared/profile-types.enum';
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { User } from './user';
 
 @Entity()
@@ -13,6 +13,6 @@ export class Profile {
   @Column({ type: 'varchar', length: 150 })
   description: string;
 
-  @OneToOne(() => User, (user) => user.profile)
+  @OneToMany(() => User, (user) => user.profile)
   user: User;
 }

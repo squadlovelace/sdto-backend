@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   ManyToMany,
-  JoinColumn,
   JoinTable,
 } from 'typeorm';
 import { Organ } from './organ';

@@ -12,24 +12,27 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InstitutionService } from 'src/modules/institution/services/institution.service';
-import { CreateInstitutionalDto } from '../dto/create-institutional.dto';
-import { Institution } from '../../../infra/typeorm/entities/institution'
+import { CreateInstitutionDto } from '../dto/create-institution.dto';
+import { Institution } from '../../../infra/typeorm/entities/institution';
 
 @ApiTags('Instituição')
 @Controller('api/v1/institution')
 export class InstitutionController {
   constructor(private readonly institutionService: InstitutionService) {}
 
+  @ApiOperation({
+    summary: 'Retorna todas as instituições',
+  })
   @Get()
   async index() {
     return await this.institutionService.findAll();
   }
 
   @ApiOperation({
-    summary: 'Cria uma instituição'
+    summary: 'Cria uma instituição e informa o colaborador responsável',
   })
   @Post()
-  async create(@Body() body: CreateInstitutionalDto): Promise<Institution> {
+  async create(@Body() body: CreateInstitutionDto): Promise<Institution> {
     return await this.institutionService.create(body);
   }
 

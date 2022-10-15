@@ -5,6 +5,7 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { BloodTypes } from '../../../shared/blood-types.enum';
 import { Profile } from './profile';
@@ -45,9 +46,7 @@ export class User {
   @Column({ nullable: false, type: 'enum', enum: BloodTypes })
   bloodType: BloodTypes;
 
-  @OneToOne(() => Profile, (profile) => profile.user, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+  @ManyToOne(() => Profile, (profile) => profile.user, {
     eager: true,
   })
   @JoinColumn()
@@ -69,7 +68,6 @@ export class User {
 
   @OneToOne(() => Collaborator, (collaborator) => collaborator.user, {
     nullable: true,
-    eager: true,
     cascade: true,
   })
   collaborator: Collaborator;
