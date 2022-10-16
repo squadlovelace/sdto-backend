@@ -15,6 +15,7 @@ import { Address } from './address';
 import { Receiver } from './receiver';
 import { Collaborator } from './collaborator';
 import { hash, genSalt } from 'bcrypt';
+import { Donor } from './donor';
 
 @Entity()
 export class User {
@@ -67,6 +68,13 @@ export class User {
     cascade: true,
   })
   receiver: Receiver;
+
+  @OneToOne(() => Donor, (donor) => donor.user, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  })
+  donor: Donor;
 
   @OneToOne(() => Collaborator, (collaborator) => collaborator.user, {
     nullable: true,

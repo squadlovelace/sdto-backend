@@ -29,8 +29,6 @@ export class Receiver {
 
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
   user: User;
 }
