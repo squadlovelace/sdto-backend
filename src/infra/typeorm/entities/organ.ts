@@ -1,11 +1,5 @@
 import { OrganTypes } from '../../../shared/organ-types.enum';
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Receiver } from './receiver';
 
 @Entity()

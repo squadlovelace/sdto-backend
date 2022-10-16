@@ -6,6 +6,7 @@ import {
   OneToMany,
   JoinColumn,
   ManyToOne,
+  BeforeInsert,
 } from 'typeorm';
 import { BloodTypes } from '../../../shared/blood-types.enum';
 import { Profile } from './profile';
@@ -13,6 +14,7 @@ import { Responsible } from './responsible';
 import { Address } from './address';
 import { Receiver } from './receiver';
 import { Collaborator } from './collaborator';
+import { hash, genSalt } from 'bcrypt';
 
 @Entity()
 export class User {
@@ -80,4 +82,10 @@ export class User {
   })
   @JoinColumn()
   responsible: Responsible;
+
+  @BeforeInsert()
+  async setPassword(password: string) {
+    const salt = await genSalt();
+    this.password = await hash(password || this.password, salt);
+  }
 }

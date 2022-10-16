@@ -31,7 +31,7 @@ export class Address {
   @Column({ type: 'varchar', length: 64 })
   state: string;
 
-  @Column({ type: 'varchar', length: 64 })
+  @Column({ type: 'varchar', length: 64, nullable: true })
   complement: string;
 
   @OneToOne(() => User, (user) => user.address, {
