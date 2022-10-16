@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Collaborator } from 'src/infra/typeorm/entities/collaborator';
-import { Repository, QueryRunner, Connection } from 'typeorm';
-import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
-import { Institution } from 'src/infra/typeorm/entities/institution';
+import { Collaborator } from '@entities/collaborator';
+import { Institution } from '@entities/institution';
+import { Repository, DataSource } from 'typeorm';
+import { CreateCollaboratorDto } from '@modules/collaborator/dto/create-collaborator.dto';
 
 @Injectable()
 export class CollaboratorService {
   constructor(
     @InjectRepository(Collaborator)
     private readonly collaboratorRepository: Repository<Collaborator>,
-    private readonly connection: Connection,
+    private readonly connection: DataSource,
   ) {}
 
   async findAll(): Promise<Collaborator[]> {
@@ -32,17 +32,9 @@ export class CollaboratorService {
     try {
       await queryRunner.startTransaction();
 
-      const institution: Institution = queryRunner.manager.create(Institution, {
-        companyName: data.institution.companyName,
-        cnpj: data.institution.cnpj,
-      });
-
-      const savedInstitution = await queryRunner.manager.save(institution);
-
       const collaboratorEntity = new Collaborator();
       collaboratorEntity.crm = data.crm;
       collaboratorEntity.position = data.position;
-      collaboratorEntity.institution = savedInstitution;
 
       const savedCollaborator = await queryRunner.manager.save(
         collaboratorEntity,

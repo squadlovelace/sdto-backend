@@ -16,6 +16,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@modules/*": ["./src/modules/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@entities/*": ["./src/infra/typeorm/entities/*"],
+      "@config/*": ["./src/config/*"],
+      "@shared/*": ["./src/shared/*"]
+    }
   }
 }

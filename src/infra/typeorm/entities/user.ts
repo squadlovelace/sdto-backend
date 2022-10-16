@@ -8,7 +8,7 @@ import {
   ManyToOne,
   BeforeInsert,
 } from 'typeorm';
-import { BloodTypes } from '../../../shared/blood-types.enum';
+import { BloodTypes } from '@shared/blood-types.enum';
 import { Profile } from './profile';
 import { Responsible } from './responsible';
 import { Address } from './address';

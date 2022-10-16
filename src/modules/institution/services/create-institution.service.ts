@@ -2,7 +2,6 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Institution } from 'src/infra/typeorm/entities/institution';

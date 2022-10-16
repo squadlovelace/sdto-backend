@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Collaborator } from 'src/infra/typeorm/entities/collaborator';
-import { CollaboratorController } from './controller/collaborator.controller';
-import { CollaboratorService } from './services/collaborator.service';
+import { Collaborator } from '@entities/collaborator';
+import { CollaboratorController } from '@modules/collaborator/controller';
+import { CollaboratorService } from '@modules/collaborator/services';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Collaborator])],

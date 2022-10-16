@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Institution } from 'src/infra/typeorm/entities/institution';
 
 export class CreateCollaboratorDto {
   @ApiProperty()
@@ -7,7 +6,4 @@ export class CreateCollaboratorDto {
 
   @ApiProperty()
   position: string;
-
-  @ApiProperty()
-  institution: Institution;
 }

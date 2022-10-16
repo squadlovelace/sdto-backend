@@ -11,9 +11,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
-import { CollaboratorService } from '../services/collaborator.service';
-import { Collaborator } from 'src/infra/typeorm/entities/collaborator';
+import { CreateCollaboratorDto } from '@modules/collaborator/dto/create-collaborator.dto';
+import { CollaboratorService } from '@modules/collaborator/services/collaborator.service';
+import { Collaborator } from '@entities/collaborator';
 
 @ApiTags('Colaborador')
 @Controller('api/v1/collaborator')
