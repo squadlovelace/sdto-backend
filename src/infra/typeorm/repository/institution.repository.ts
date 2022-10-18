@@ -13,6 +13,7 @@ import {
   CpfInUseError,
   EmailInUseError,
   RgInUseError,
+  CnpjInUseError,
 } from '@modules/institution/exception';
 import { IFindAllInstitution } from '@modules/institution/services';
 
@@ -28,28 +29,33 @@ export class InstitutionRepository {
     try {
       await queryRunner.startTransaction();
 
-      const email = await queryRunner.manager.findOneBy(User, {
-        email: data.collaborator.email,
-      });
-
-      if (email) {
-        throw new EmailInUseError();
+      const validateInstitution = await queryRunner.manager.findOne(
+        Institution,
+        { where: { cnpj: data.cnpj } },
+      );
+      if (validateInstitution) {
+        throw new CnpjInUseError();
       }
 
-      const rg = await queryRunner.manager.findOneBy(User, {
-        rg: data.collaborator.rg,
+      const userCpf = await queryRunner.manager.findOne(User, {
+        where: { cpf: data.collaborator.cpf },
       });
+      if (userCpf) {
+        throw new CpfInUseError();
+      }
 
-      if (rg) {
+      const userRg = await queryRunner.manager.findOne(User, {
+        where: { rg: data.collaborator.rg },
+      });
+      if (userRg) {
         throw new RgInUseError();
       }
 
-      const cpf = await queryRunner.manager.findOneBy(User, {
-        cpf: data.collaborator.cpf,
+      const userEmail = await queryRunner.manager.findOne(User, {
+        where: { email: data.collaborator.email },
       });
-
-      if (cpf) {
-        throw new CpfInUseError();
+      if (userEmail) {
+        throw new EmailInUseError();
       }
 
       const address: Address = queryRunner.manager.create(Address, {
