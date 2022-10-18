@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ProfileTypes } from '@shared/profile-types.enum';
+import { ProfileTypes } from '../../../shared/profile-types.enum';
 import { User } from './user';
 
 @Entity()

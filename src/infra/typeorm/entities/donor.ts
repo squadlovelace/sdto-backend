@@ -6,7 +6,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { DonorType } from '@shared/donor-type.enum';
+import { DonorType } from '../../../shared/donor-type.enum';
 import { User } from './user';
 import { Organ } from './organ';
 
@@ -19,7 +19,6 @@ export class Donor {
   type: DonorType;
 
   @ManyToMany(() => Organ, (organ) => organ.receiver, {
-    eager: true,
     cascade: true,
   })
   @JoinTable()

@@ -5,9 +5,8 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { HealthCheckController } from './app.controller';
-import { CollaboratorModule } from './modules/collaborator/collaborator.module';
-import { InstitutionModule } from './modules/institution/institution.module';
-import { OrganModule } from './modules/organ/organ.module';
+import { InstitutionModule } from '@modules/institution/institution.module';
+import { OrganModule } from '@modules/organ/organ.module';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { ConfigModule } from '@nestjs/config';
     OrganModule,
     TerminusModule,
     HttpModule,
-    CollaboratorModule,
     InstitutionModule,
   ],
   controllers: [HealthCheckController],

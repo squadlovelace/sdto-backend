@@ -21,7 +21,6 @@ export class Receiver {
   comorbidity: string;
 
   @ManyToMany(() => Organ, (organ) => organ.receiver, {
-    eager: true,
     cascade: true,
   })
   @JoinTable()

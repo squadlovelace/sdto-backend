@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { OrganTypes } from '@shared/organ-types.enum';
+import { OrganTypes } from '../../../shared/organ-types.enum';
 import { Receiver } from './receiver';
 import { Donor } from './donor';
 

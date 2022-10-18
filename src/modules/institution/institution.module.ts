@@ -12,13 +12,18 @@ import {
   GetAllInstitutionService,
 } from '@modules/institution/services';
 import { Collaborator } from '@infra/typeorm/entities';
+import { InstitutionRepository } from '@infra/typeorm/repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Institution, User, Profile, Collaborator]),
   ],
   controllers: [CreateInstitutionController, GetAllInstitutionController],
-  providers: [CreateInstitutionService, GetAllInstitutionService],
+  providers: [
+    CreateInstitutionService,
+    GetAllInstitutionService,
+    InstitutionRepository,
+  ],
   exports: [CreateInstitutionService],
 })
 export class InstitutionModule {}

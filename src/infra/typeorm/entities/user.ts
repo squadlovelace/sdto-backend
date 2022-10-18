@@ -8,7 +8,7 @@ import {
   ManyToOne,
   BeforeInsert,
 } from 'typeorm';
-import { BloodTypes } from '@shared/blood-types.enum';
+import { BloodTypes } from '../../../shared/blood-types.enum';
 import { Profile } from './profile';
 import { Responsible } from './responsible';
 import { Address } from './address';
@@ -22,7 +22,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false, type: 'varchar', length: 250 })
+  @Column({ nullable: false, type: 'varchar', length: 250, unique: true })
   email: string;
 
   @Column({ nullable: false, type: 'varchar', length: 200 })
@@ -64,14 +64,12 @@ export class User {
 
   @OneToOne(() => Receiver, (receiver) => receiver.user, {
     nullable: true,
-    eager: true,
     cascade: true,
   })
   receiver: Receiver;
 
   @OneToOne(() => Donor, (donor) => donor.user, {
     nullable: true,
-    eager: true,
     cascade: true,
   })
   donor: Donor;
