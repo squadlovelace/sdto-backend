@@ -104,7 +104,6 @@ export class UserRepository {
       await queryRunner.manager.save(receiver);
       await queryRunner.commitTransaction();
     } catch (error) {
-      console.error(error);
       if (queryRunner.isTransactionActive) {
         await queryRunner.rollbackTransaction();
       }
