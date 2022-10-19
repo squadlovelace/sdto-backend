@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserReceiverService } from '../services';
 import { CreateUserReceiverDto } from '../dto';
 
-@ApiTags('Receptor')
+@ApiTags('Usuário')
 @Controller('api/v1/user-receiver')
 export class CreateUserReceiverController {
   constructor(

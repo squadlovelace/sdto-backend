@@ -5,6 +5,7 @@ import {
   OneToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { DonorType } from '../../../shared/donor-type.enum';
 import { User } from './user';
@@ -27,5 +28,6 @@ export class Donor {
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,
   })
+  @JoinColumn()
   user: User;
 }

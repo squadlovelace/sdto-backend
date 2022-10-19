@@ -5,6 +5,7 @@ import {
   OneToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { Organ } from './organ';
 import { User } from './user';
@@ -29,5 +30,6 @@ export class Receiver {
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,
   })
+  @JoinColumn()
   user: User;
 }
