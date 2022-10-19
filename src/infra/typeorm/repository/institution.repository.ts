@@ -4,9 +4,13 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { Institution, User, Profile } from '@infra/typeorm/entities';
-import { Address } from '@infra/typeorm/entities';
-import { Collaborator } from '@infra/typeorm/entities';
+import {
+  Institution,
+  User,
+  Profile,
+  Address,
+  Collaborator,
+} from '@infra/typeorm/entities';
 import { CreateInstitutionDto } from '@modules/institution/dto/create-institution.dto';
 import { ProfileTypes } from '@shared/profile-types.enum';
 import {
@@ -14,7 +18,7 @@ import {
   EmailInUseError,
   RgInUseError,
   CnpjInUseError,
-} from '@modules/institution/exception';
+} from '@modules/exception';
 import { IFindAllInstitution } from '@modules/institution/services';
 
 @Injectable()

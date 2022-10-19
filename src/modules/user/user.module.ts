@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UserController } from '@modules/user/controller';
+import { CreateUserReceiverController } from '@modules/user/controller';
 import { CreateUserReceiverService } from '@modules/user/services';
+import { UserRepository } from '@infra/typeorm/repository/user.repository';
 
 @Module({
-  controllers: [UserController],
-  providers: [CreateUserReceiverService],
+  controllers: [CreateUserReceiverController],
+  providers: [CreateUserReceiverService, UserRepository],
 })
 export class UserModule {}
