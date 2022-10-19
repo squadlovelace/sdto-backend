@@ -1,8 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateInstitutionService } from 'src/modules/institution/services/create-institution.service';
-import { CreateInstitutionDto } from '../dto/create-institution.dto';
-import { Institution } from '../../../infra/typeorm/entities/institution';
+import { CreateInstitutionService } from '../services';
+import { CreateInstitutionDto } from '../dto';
 
 @ApiTags('Instituição')
 @Controller('api/v1/institution')
@@ -14,7 +13,7 @@ export class CreateInstitutionController {
     summary: 'Cria uma instituição e informa o colaborador responsável',
   })
   @Post()
-  async create(@Body() body: CreateInstitutionDto): Promise<Institution> {
-    return await this.createInstitutionService.create(body);
+  async create(@Body() data: CreateInstitutionDto): Promise<void> {
+    await this.createInstitutionService.add(data);
   }
 }

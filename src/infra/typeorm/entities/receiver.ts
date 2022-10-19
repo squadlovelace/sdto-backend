@@ -5,6 +5,7 @@ import {
   OneToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { Organ } from './organ';
 import { User } from './user';
@@ -21,7 +22,6 @@ export class Receiver {
   comorbidity: string;
 
   @ManyToMany(() => Organ, (organ) => organ.receiver, {
-    eager: true,
     cascade: true,
   })
   @JoinTable()
@@ -29,8 +29,7 @@ export class Receiver {
 
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
   })
+  @JoinColumn()
   user: User;
 }

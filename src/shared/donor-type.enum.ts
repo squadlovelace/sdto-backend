@@ -1,4 +1,4 @@
 export enum DonorType {
-  LIVING = 'ALIVE',
+  LIVING = 'LIVING',
   DECEASED = 'DECEASED',
 }
