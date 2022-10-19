@@ -131,6 +131,7 @@ export class InstitutionRepository {
       'institution.cnpj',
     ]);
     query.from(Institution, 'institution');
+    query.leftJoinAndSelect('institution.address', 'address');
     query
       .leftJoin('institution.collaborator', 'collaborator')
       .addSelect([
