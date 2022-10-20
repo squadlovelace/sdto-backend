@@ -155,4 +155,37 @@ export class InstitutionRepository {
     }
     return responseData;
   }
+
+  async findOne(id: string): Promise<IFindAllInstitution> {
+    const query = this.institutionRepository.createQueryBuilder();
+    query.select([
+      'institution.id',
+      'institution.companyName',
+      'institution.cnpj',
+    ]);
+    query.from(Institution, 'institution');
+    query.where('institution.id = :id', {id});
+    query.leftJoinAndSelect('institution.address', 'address');
+    query
+      .leftJoin('institution.collaborator', 'collaborator')
+      .addSelect([
+        'collaborator.id',
+        'collaborator.crm',
+        'collaborator.position',
+      ])
+      .leftJoin('collaborator.user', 'user') 
+      .addSelect(['user.id', 'user.name']);
+    const institutions = await query.getOne();
+    let responseData: IFindAllInstitution;
+
+      responseData = {
+        id: institutions.id,
+        companyName: institutions.companyName,
+        cnpj: institutions.cnpj,
+        address: institutions.address,
+        collaborators: institutions.collaborator,
+      };
+    
+    return responseData;
+  }
 }
