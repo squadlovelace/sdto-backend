@@ -21,10 +21,12 @@ import {
 } from '@modules/exception';
 import { CreateUserReceiverDto, CreateUserDonorDto } from '@modules/user/dto';
 import { ProfileTypes } from '@shared/profile-types.enum';
+import { CredentialsDto } from '@modules/auth/dto';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly datasource: DataSource) {}
+  private userRepository = this.datasource.getRepository(User);
 
   async addUserReceiver(
     input: CreateUserReceiverDto,
@@ -206,5 +208,21 @@ export class UserRepository {
     } finally {
       queryRunner.release();
     }
+  }
+
+  async checkCredentials(credentials: CredentialsDto): Promise<User> {
+    const { cpf, password } = credentials;
+    const user = await this.userRepository.findOne({ where: { cpf } });
+
+    if (user && User.checkPassword(password, user.password)) {
+      return user;
+    } else {
+      null;
+    }
+  }
+
+  async findUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    return user;
   }
 }

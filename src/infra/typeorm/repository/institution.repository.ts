@@ -140,7 +140,9 @@ export class InstitutionRepository {
         'collaborator.position',
       ])
       .leftJoin('collaborator.user', 'user')
-      .addSelect(['user.id', 'user.name']);
+      .addSelect(['user.id', 'user.name'])
+      .leftJoin('user.profile', 'profile')
+      .addSelect(['profile.type']);
     const institutions = await query.getMany();
     const responseData: IFindAllInstitution[] = [];
 

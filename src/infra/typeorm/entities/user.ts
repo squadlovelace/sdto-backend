@@ -14,7 +14,7 @@ import { Responsible } from './responsible';
 import { Address } from './address';
 import { Receiver } from './receiver';
 import { Collaborator } from './collaborator';
-import { hash, genSalt } from 'bcrypt';
+import { compareSync, hashSync, genSaltSync } from 'bcrypt';
 import { Donor } from './donor';
 
 @Entity()
@@ -90,8 +90,15 @@ export class User {
   responsible: Responsible;
 
   @BeforeInsert()
-  async setPassword(password: string) {
-    const salt = await genSalt();
-    this.password = await hash(password || this.password, salt);
+  private setPassword(password: string) {
+    const salt = genSaltSync();
+    this.password = hashSync(password || this.password, salt);
+  }
+
+  public static checkPassword(
+    plainPassword: string,
+    hashedPassword: string,
+  ): boolean {
+    return compareSync(plainPassword, hashedPassword);
   }
 }
