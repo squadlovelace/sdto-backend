@@ -166,7 +166,7 @@ export class InstitutionRepository {
       'institution.cnpj',
     ]);
     query.from(Institution, 'institution');
-    query.where('institution.id = :id', {id});
+    query.where('institution.id = :id', { id });
     query.leftJoinAndSelect('institution.address', 'address');
     query
       .leftJoin('institution.collaborator', 'collaborator')
@@ -175,19 +175,18 @@ export class InstitutionRepository {
         'collaborator.crm',
         'collaborator.position',
       ])
-      .leftJoin('collaborator.user', 'user') 
+      .leftJoin('collaborator.user', 'user')
       .addSelect(['user.id', 'user.name']);
     const institutions = await query.getOne();
-    let responseData: IFindAllInstitution;
 
-      responseData = {
-        id: institutions.id,
-        companyName: institutions.companyName,
-        cnpj: institutions.cnpj,
-        address: institutions.address,
-        collaborators: institutions.collaborator,
-      };
-    
+    const responseData: IFindAllInstitution = {
+      id: institutions.id,
+      companyName: institutions.companyName,
+      cnpj: institutions.cnpj,
+      address: institutions.address,
+      collaborators: institutions.collaborator,
+    };
+
     return responseData;
   }
 }
