@@ -217,7 +217,7 @@ export class UserRepository {
     if (user && User.checkPassword(password, user.password)) {
       return user;
     } else {
-      null;
+      return null;
     }
   }
 
