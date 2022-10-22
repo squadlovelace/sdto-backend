@@ -171,13 +171,13 @@ export class UserRepository {
       });
       const savedResponsible = await queryRunner.manager.save(reponsible);
 
-      const userReceiver: User = queryRunner.manager.create(User, {
+      const userDonor: User = queryRunner.manager.create(User, {
         ...input,
         profile: profileType,
         responsible: savedResponsible,
         address: savedAddress,
       });
-      const saveUserDonor = await queryRunner.manager.save(userReceiver);
+      const saveUserDonor = await queryRunner.manager.save(userDonor);
 
       const organsToAdd = [];
       for (const data of input.organ) {
@@ -212,12 +212,15 @@ export class UserRepository {
 
   async checkCredentials(credentials: CredentialsDto): Promise<User> {
     const { cpf, password } = credentials;
-    const user = await this.userRepository.findOne({ where: { cpf } });
+    const user = await this.userRepository.findOne({
+      where: { cpf },
+      relations: { profile: true },
+    });
 
     if (user && User.checkPassword(password, user.password)) {
       return user;
     } else {
-      null;
+      return null;
     }
   }
 

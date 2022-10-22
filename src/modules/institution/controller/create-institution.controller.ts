@@ -1,18 +1,10 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateInstitutionService } from '../services';
 import { CreateInstitutionDto } from '../dto';
 
-@ApiTags('Instituição')
-@Controller('api/v1/institution')
+@ApiTags('Autenticação')
+@Controller('api/v1/institution/signup')
 export class CreateInstitutionController {
   constructor(
     private readonly createInstitutionService: CreateInstitutionService,
@@ -20,9 +12,7 @@ export class CreateInstitutionController {
   @ApiOperation({
     summary: 'Cria uma instituição e informa o colaborador responsável',
   })
-  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   async create(@Body() data: CreateInstitutionDto): Promise<void> {
     await this.createInstitutionService.add(data);

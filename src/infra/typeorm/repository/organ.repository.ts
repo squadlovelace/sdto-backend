@@ -7,11 +7,12 @@ import { DataSource } from 'typeorm';
 import { CreateOrganDto } from '@modules/organ/dto';
 import { Organ } from '../entities';
 import { IFindAllOrgan } from '@modules/organ/services';
+import { GetOrganDto } from '@modules/organ/dto/get-all-organ.dto';
 
 @Injectable()
 export class OrganRepository {
   constructor(private readonly datasource: DataSource) {}
-  private organRepository = this.datasource.getRepository(Organ);
+  private organDatasource = this.datasource.getRepository(Organ);
 
   async add(input: CreateOrganDto): Promise<void> {
     const queryRunner = this.datasource.createQueryRunner();
@@ -40,8 +41,34 @@ export class OrganRepository {
     }
   }
 
-  async findAll(): Promise<IFindAllOrgan[]> {
-    const organs = await this.organRepository.find();
-    return organs;
+  async findAll(
+    options: Omit<GetOrganDto, 'id'>,
+  ): Promise<{ total: number; organs: IFindAllOrgan[] }> {
+    const page = options.page || 1;
+    const limit = options.limit || 50;
+
+    const { name, organType } = options;
+    const query = this.organDatasource.createQueryBuilder('organ');
+
+    if (name) {
+      query.where('organ.name LIKE :name', { name: `%${name}%` });
+    }
+
+    if (organType) {
+      query.andWhere('organ.organType = :organType', { organType });
+    }
+    query.skip((page - 1) * limit);
+    query.take(+limit);
+    query.orderBy(options.sort ? JSON.stringify(options.sort) : undefined);
+    query.select([
+      'organ.id',
+      'organ.name',
+      'organ.ischemiaTime',
+      'organ.organType',
+    ]);
+
+    const [organs, total] = await query.getManyAndCount();
+
+    return { total, organs };
   }
 }

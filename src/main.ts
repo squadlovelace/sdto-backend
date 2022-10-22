@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('SDTO')
     .setDescription('Documentação API Rest - SDTO')
     .setVersion('0.0.1')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
