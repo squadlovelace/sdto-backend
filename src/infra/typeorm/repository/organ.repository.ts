@@ -73,7 +73,7 @@ export class OrganRepository {
   }
 
   async findOne(id: string): Promise<IFindAllOrgan> {
-    const organ = await this.organRepository.findOne({ where: { id } });
+    const organ = await this.organDatasource.findOne({ where: { id } });
     return organ;
   }
 
@@ -83,11 +83,11 @@ export class OrganRepository {
     organ.ischemiaTime = data.ischemiaTime;
     organ.organType = data.organType;
 
-    return this.organRepository.save(organ);
+    return this.organDatasource.save(organ);
   }
 
   async delete(id: string): Promise<void> {
     await this.findOne(id);
-    await this.organRepository.delete(id);
+    await this.organDatasource.delete(id);
   }
 }
