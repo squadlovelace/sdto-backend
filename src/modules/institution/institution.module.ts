@@ -4,11 +4,13 @@ import { Institution } from '@entities/institution';
 import { Profile } from '@entities/profile';
 import { User } from '@entities/user';
 import {
+  CreateCollaboratorController,
   CreateInstitutionController,
   GetAllInstitutionController,
   GetOneInstitutionController,
 } from '@modules/institution/controller';
 import {
+  CreateCollaboratorService,
   CreateInstitutionService,
   GetAllInstitutionService,
   GetOneInstitutionService,
@@ -20,11 +22,17 @@ import { InstitutionRepository } from '@infra/typeorm/repository';
   imports: [
     TypeOrmModule.forFeature([Institution, User, Profile, Collaborator]),
   ],
-  controllers: [CreateInstitutionController, GetAllInstitutionController,GetOneInstitutionController],
+  controllers: [
+    CreateInstitutionController,
+    GetAllInstitutionController,
+    GetOneInstitutionController,
+    CreateCollaboratorController,
+  ],
   providers: [
     CreateInstitutionService,
     GetAllInstitutionService,
     GetOneInstitutionService,
+    CreateCollaboratorService,
     InstitutionRepository,
   ],
   exports: [CreateInstitutionService],
