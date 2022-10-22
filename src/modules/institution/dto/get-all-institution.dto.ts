@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { BaseQueryParametersDto } from '@shared/base-query-parameters.dto';
 
 class UserData {
   @ApiProperty()
@@ -48,7 +49,7 @@ class AddressData {
   complement: string;
 }
 
-export class GetAllInstitutionDto {
+export class GetAllInstitutionDto extends BaseQueryParametersDto {
   @ApiProperty()
   id: string;
 

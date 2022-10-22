@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Collaborator, Address } from '@infra/typeorm/entities';
 import { InstitutionRepository } from '@infra/typeorm/repository';
+import { GetAllInstitutionDto } from '../dto';
 
 export interface IFindAllInstitution {
   id?: string;
@@ -14,7 +15,9 @@ export interface IFindAllInstitution {
 export class GetAllInstitutionService {
   constructor(private readonly institutionRepository: InstitutionRepository) {}
 
-  async find(): Promise<IFindAllInstitution[]> {
-    return await this.institutionRepository.findAll();
+  async find(
+    options: Omit<GetAllInstitutionDto, 'id'>,
+  ): Promise<{ total: number; institutions: IFindAllInstitution[] }> {
+    return await this.institutionRepository.findAll(options);
   }
 }

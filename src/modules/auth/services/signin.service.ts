@@ -3,6 +3,10 @@ import { UserRepository } from '@infra/typeorm/repository';
 import { CredentialsDto } from '../dto';
 import { JwtService } from '@nestjs/jwt';
 
+interface ISigninOutput {
+  token: string;
+  profile: string;
+}
 @Injectable()
 export class SigninService {
   constructor(
@@ -10,7 +14,7 @@ export class SigninService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signin(credentialsDto: CredentialsDto): Promise<{ token: string }> {
+  async signin(credentialsDto: CredentialsDto): Promise<ISigninOutput> {
     const user = await this.userRepository.checkCredentials(credentialsDto);
 
     if (user === null) {
@@ -20,6 +24,9 @@ export class SigninService {
     const jwtPayload = { id: user.id };
     const token = this.jwtService.sign(jwtPayload);
 
-    return { token };
+    return {
+      token,
+      profile: user.profile.type,
+    };
   }
 }

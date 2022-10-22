@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrganTypes } from '@shared/organ-types.enum';
 import { OrganRepository } from '@infra/typeorm/repository';
+import { GetOrganDto } from '../dto/get-all-organ.dto';
 
 export interface IFindAllOrgan {
   name?: string;
@@ -12,7 +13,9 @@ export interface IFindAllOrgan {
 export class GetAllOrganService {
   constructor(private readonly organRepository: OrganRepository) {}
 
-  async findAll(): Promise<IFindAllOrgan[]> {
-    return await this.organRepository.findAll();
+  async findAll(
+    options: Omit<GetOrganDto, 'id'>,
+  ): Promise<{ organs: IFindAllOrgan[]; total: number }> {
+    return await this.organRepository.findAll(options);
   }
 }

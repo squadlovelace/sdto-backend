@@ -12,7 +12,10 @@ import {
   Address,
   Collaborator,
 } from '@infra/typeorm/entities';
-import { CreateInstitutionDto } from '@modules/institution/dto/create-institution.dto';
+import {
+  AddressData,
+  CreateInstitutionDto,
+} from '@modules/institution/dto/create-institution.dto';
 import { ProfileTypes } from '@shared/profile-types.enum';
 import {
   CpfInUseError,
@@ -22,6 +25,7 @@ import {
   CrmInUseError,
 } from '@modules/exception';
 import { IFindAllInstitution } from '@modules/institution/services';
+import { GetAllInstitutionDto } from '@modules/institution/dto';
 import { CreateCollaboratorDto } from '@modules/institution/dto/create-collaborator.dto';
 
 @Injectable()
@@ -126,15 +130,28 @@ export class InstitutionRepository {
     }
   }
 
-  async findAll(): Promise<IFindAllInstitution[]> {
-    const query = this.institutionRepository.createQueryBuilder();
+  async findAll(
+    options: Omit<GetAllInstitutionDto, 'id'>,
+  ): Promise<{ total: number; institutions: IFindAllInstitution[] }> {
+    const page = options.page || 1;
+    const limit = options.limit || 50;
+
+    const companyName = options.companyName;
+
+    const query = this.institutionRepository.createQueryBuilder('institution');
     query.select([
       'institution.id',
       'institution.companyName',
       'institution.cnpj',
     ]);
-    query.from(Institution, 'institution');
     query.leftJoinAndSelect('institution.address', 'address');
+
+    if (companyName) {
+      query.where('institution.companyName LIKE :companyName', {
+        companyName: `%${companyName}%`,
+      });
+    }
+
     query
       .leftJoin('institution.collaborator', 'collaborator')
       .addSelect([
@@ -146,9 +163,12 @@ export class InstitutionRepository {
       .addSelect(['user.id', 'user.name'])
       .leftJoin('user.profile', 'profile')
       .addSelect(['profile.type']);
-    const institutions = await query.getMany();
-    const responseData: IFindAllInstitution[] = [];
 
+    query.skip((page - 1) * limit);
+    query.take(+limit);
+    const [institutions, total] = await query.getManyAndCount();
+
+    const responseData: IFindAllInstitution[] = [];
     for (const institution of institutions) {
       responseData.push({
         id: institution.id,
@@ -158,7 +178,10 @@ export class InstitutionRepository {
         collaborators: institution.collaborator,
       });
     }
-    return responseData;
+    return {
+      total,
+      institutions: responseData,
+    };
   }
 
   async findOne(id: string): Promise<IFindAllInstitution> {

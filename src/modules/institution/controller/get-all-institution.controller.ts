@@ -3,6 +3,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -10,6 +11,7 @@ import {
   ApiResponse,
   ApiTags,
   ApiBearerAuth,
+  ApiQuery,
 } from '@nestjs/swagger';
 import {
   IFindAllInstitution,
@@ -31,9 +33,29 @@ export class GetAllInstitutionController {
   })
   @ApiResponse({ status: 200, type: GetAllInstitutionDto })
   @ApiBearerAuth()
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: 'number',
+    description: 'número da pagina',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: 'number',
+    description: 'total de registros a serem retornados',
+  })
+  @ApiQuery({
+    name: 'companyName',
+    required: false,
+    type: 'string',
+    description: 'pesquisa pelo o nome da instituição',
+  })
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<IFindAllInstitution[]> {
-    return await this.getAllInstitutionService.find();
+  async findAll(
+    @Query() query: Omit<GetAllInstitutionDto, 'id'>,
+  ): Promise<{ total: number; institutions: IFindAllInstitution[] }> {
+    return await this.getAllInstitutionService.find(query);
   }
 }
