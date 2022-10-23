@@ -1,12 +1,11 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <img src="./logo.png" width="200" alt="SDTO Logo" />
 </p>
-<p align="center">Desenvolvido com Nestjs Framework</p>
 
-<h1 align="center">SDTO - Sistema de Difusão de Transplantes de Órgãos</h1>
+<h2 align="center">SDTO - Sistema de Difusão de Transplantes de Órgãos</h2>
 
 ## Descrição
-Projeto desenvolvimento durante o Bootcamp Desenvolvimento Fullstack, promovido pelo [Atlântico Academy Bootcamp](https://www.atlantico.com.br/academy-bootcamp/)
+Projeto desenvolvido durante o Bootcamp Desenvolvimento Fullstack, promovido pelo [Atlântico Academy Bootcamp](https://www.atlantico.com.br/academy-bootcamp/)
 
 ## Como executar o projeto?
 
@@ -33,7 +32,7 @@ $ npm install
 ```
 2. Com as dependências instaladas, devemos configurar o arquivo responsável por manter as variáveis de ambiente. Na raiz do projeto renomei o arquivo `.env-example` para `.env`, se estiver usando um SO Unix Like, no Terminal, basta executar o comando:
 ```sh
-$ mv .env-example .env
+$ cp .env-example .env
 ```
 3. O arquivo `.env` tem as seguintes variáveis de ambiente, caso o banco de dados esteja rodando em container, altere para os valores de sua preferência.
 ```sh
@@ -58,6 +57,8 @@ $ npm run start:prod # Ambiente de produção
 ```
 2. Para acessar a documentação, basta no browser digitar o endereço:
 http://localhost:3001/doc
+
+1. Para auxiliar nos testes, dentro da pasta `http` tem um arquivo com todas as rotas. Utilize o client http [Insomnia](https://insomnia.rest/download) para importar o arquivo.
 ## License
 
 Nest is [MIT licensed](LICENSE).
