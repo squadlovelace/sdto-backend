@@ -2,6 +2,8 @@ import {
   Injectable,
   HttpException,
   InternalServerErrorException,
+  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { CreateOrganDto } from '@modules/organ/dto';
@@ -77,17 +79,40 @@ export class OrganRepository {
     return organ;
   }
 
-  async update(id: string, data: CreateOrganDto): Promise<IFindAllOrgan> {
-    const organ = await this.findOne(id);
+  async update(id: string, data: CreateOrganDto): Promise<void> {
+    const organ = await this.organDatasource.findOne({ where: { id } });
     organ.name = data.name;
     organ.ischemiaTime = data.ischemiaTime;
     organ.organType = data.organType;
 
-    return this.organDatasource.save(organ);
+    this.organDatasource.save(organ);
   }
 
   async delete(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.organDatasource.delete(id);
+    const organReceiver = await this.organDatasource
+      .createQueryBuilder('organ')
+      .leftJoin('organ.receiver', 'receiver')
+      .where('organId = :idOrganReceiver', { idOrganReceiver: id })
+      .getOne();
+
+    const organDonor = await this.organDatasource
+      .createQueryBuilder('organDonor')
+      .leftJoin('organDonor.donor', 'donor')
+      .where('organId = :idOrganDonor', { idOrganDonor: id })
+      .getOne();
+
+    if (organReceiver || organDonor) {
+      throw new BadRequestException(
+        'Órgão não pode ser excluído, pois está associado a um DOADOR ou RECEPTOR',
+      );
+    }
+
+    if (!organReceiver || !organDonor) {
+      const organ = await this.organDatasource.findOne({ where: { id } });
+      if (!organ) {
+        throw new NotFoundException('Órgão não encontrado');
+      }
+      await this.organDatasource.delete(organ.id);
+    }
   }
 }

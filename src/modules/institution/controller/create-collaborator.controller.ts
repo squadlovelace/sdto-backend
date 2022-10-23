@@ -3,6 +3,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -11,8 +12,8 @@ import { ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateCollaboratorService } from '../services/create-collaborator.service';
 import { CreateCollaboratorDto } from '../dto/create-collaborator.dto';
 
-@ApiTags('Colaborador')
-@Controller('api/v1/collaborator')
+@ApiTags('Instituição')
+@Controller('api/v1/institution')
 export class CreateCollaboratorController {
   constructor(
     private readonly createCollaboratorService: CreateCollaboratorService,
@@ -23,10 +24,10 @@ export class CreateCollaboratorController {
   @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard('jwt'))
-  @Post()
+  @Post(':id/collaborator')
   async create(
     @Body() data: CreateCollaboratorDto,
-    idInstitution: string,
+    @Param('id') idInstitution: string,
   ): Promise<void> {
     await this.createCollaboratorService.add(data, idInstitution);
   }

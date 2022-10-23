@@ -22,11 +22,12 @@ import {
 import { CreateUserReceiverDto, CreateUserDonorDto } from '@modules/user/dto';
 import { ProfileTypes } from '@shared/profile-types.enum';
 import { CredentialsDto } from '@modules/auth/dto';
+import { IFindAllUser } from '@modules/user/services/get-all-user.service';
 
 @Injectable()
 export class UserRepository {
   constructor(private readonly datasource: DataSource) {}
-  private userRepository = this.datasource.getRepository(User);
+  private userDatasource = this.datasource.getRepository(User);
 
   async addUserReceiver(
     input: CreateUserReceiverDto,
@@ -212,7 +213,7 @@ export class UserRepository {
 
   async checkCredentials(credentials: CredentialsDto): Promise<User> {
     const { cpf, password } = credentials;
-    const user = await this.userRepository.findOne({
+    const user = await this.userDatasource.findOne({
       where: { cpf },
       relations: { profile: true },
     });
@@ -225,7 +226,112 @@ export class UserRepository {
   }
 
   async findUserById(id: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userDatasource.findOne({ where: { id } });
     return user;
+  }
+
+  async findAll(): Promise<IFindAllUser[]> {
+    const query = this.userDatasource.createQueryBuilder('user');
+    query.select([
+      'user.id',
+      'user.email',
+      'user.name',
+      'user.rg',
+      'user.cpf',
+      'user.phone',
+      'user.birthDate',
+      'user.gender',
+      'user.bloodType',
+    ]);
+    query.leftJoinAndSelect('user.address', 'address');
+    query.leftJoinAndSelect('user.profile', 'profile');
+    query.leftJoinAndSelect('user.responsible', 'responsible');
+    query
+      .leftJoinAndSelect('user.receiver', 'receiver')
+      .leftJoinAndSelect('receiver.organ', 'organ_receiver');
+    query
+      .leftJoinAndSelect('user.donor', 'donor')
+      .leftJoinAndSelect('donor.organ', 'organ_donor');
+    query
+      .where('profile.type = :profileDonor', {
+        profileDonor: ProfileTypes.DONOR,
+      })
+      .orWhere('profile.type = :profileReceiver', {
+        profileReceiver: ProfileTypes.RECEIVER,
+      });
+
+    const users = await query.getMany();
+
+    const responseData: IFindAllUser[] = [];
+    for (const user of users) {
+      responseData.push({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        rg: user.rg,
+        cpf: user.cpf,
+        phone: user.phone,
+        birthDate: user.birthDate,
+        gender: user.gender,
+        bloodType: user.bloodType,
+        responsible: user.responsible,
+        address: user.address,
+        profile: user.profile,
+        receiver: user.receiver,
+        donor: user.donor,
+      });
+    }
+    return responseData;
+  }
+
+  async findOne(id: string): Promise<IFindAllUser> {
+    const query = this.userDatasource.createQueryBuilder('user');
+    query.select([
+      'user.id',
+      'user.email',
+      'user.name',
+      'user.rg',
+      'user.cpf',
+      'user.phone',
+      'user.birthDate',
+      'user.gender',
+      'user.bloodType',
+    ]);
+    query.where('user.id = :id', { id });
+    query.leftJoinAndSelect('user.address', 'address');
+    query.leftJoinAndSelect('user.profile', 'profile');
+    query.leftJoinAndSelect('user.responsible', 'responsible');
+    query
+      .leftJoinAndSelect('user.receiver', 'receiver')
+      .leftJoinAndSelect('receiver.organ', 'organ_receiver');
+    query
+      .leftJoinAndSelect('user.donor', 'donor')
+      .leftJoinAndSelect('donor.organ', 'organ_donor');
+    query
+      .where('profile.type = :profileDonor', {
+        profileDonor: ProfileTypes.DONOR,
+      })
+      .orWhere('profile.type = :profileReceiver', {
+        profileReceiver: ProfileTypes.RECEIVER,
+      });
+
+    const user = await query.getOne();
+    const responseData: IFindAllUser = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      rg: user.rg,
+      cpf: user.cpf,
+      phone: user.phone,
+      birthDate: user.birthDate,
+      gender: user.gender,
+      bloodType: user.bloodType,
+      responsible: user.responsible,
+      address: user.address,
+      profile: user.profile,
+      receiver: user.receiver,
+      donor: user.donor,
+    };
+    return responseData;
   }
 }

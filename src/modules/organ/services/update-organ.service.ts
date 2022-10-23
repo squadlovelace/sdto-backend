@@ -6,7 +6,7 @@ import { CreateOrganDto } from '../dto/create-organ.dto';
 export class UpdateOrganService {
   constructor(private readonly organRepository: OrganRepository) {}
 
-  async add(input: CreateOrganDto): Promise<void> {
-    await this.organRepository.add(input);
+  async update(id: string, input: CreateOrganDto): Promise<void> {
+    await this.organRepository.update(id, input);
   }
 }

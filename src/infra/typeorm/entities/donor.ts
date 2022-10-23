@@ -19,13 +19,13 @@ export class Donor {
   @Column({ type: 'enum', enum: DonorType })
   type: DonorType;
 
-  @ManyToMany(() => Organ, (organ) => organ.receiver, {
+  @ManyToMany(() => Organ, (organ) => organ.donor, {
     cascade: true,
   })
   @JoinTable()
   organ: Organ[];
 
-  @OneToOne(() => User, (user) => user.receiver, {
+  @OneToOne(() => User, (user) => user.donor, {
     nullable: true,
   })
   @JoinColumn()

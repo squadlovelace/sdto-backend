@@ -6,14 +6,7 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { IFindAllOrgan } from '../services';
-import { GetOrganDto } from '../dto/get-all-organ.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { DeleteOrganService } from '../services/delete-organ.service';
 
@@ -25,7 +18,6 @@ export class DeleteOrganController {
   @ApiOperation({
     summary: 'Remove um órgão cadastrado',
   })
-  @ApiResponse({ status: 200, type: GetOrganDto })
   @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))
