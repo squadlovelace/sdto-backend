@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Put,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateOrganService } from '../services/update-organ.service';
@@ -23,7 +24,10 @@ export class UpdateOrganController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.CREATED)
   @Put(':id')
-  async update(@Body() input: CreateOrganDto): Promise<void> {
-    await this.organService.add(input);
+  async update(
+    @Param('id') id: string,
+    @Body() input: CreateOrganDto,
+  ): Promise<void> {
+    await this.organService.update(id, input);
   }
 }

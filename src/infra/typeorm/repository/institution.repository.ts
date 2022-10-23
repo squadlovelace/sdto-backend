@@ -12,10 +12,7 @@ import {
   Address,
   Collaborator,
 } from '@infra/typeorm/entities';
-import {
-  AddressData,
-  CreateInstitutionDto,
-} from '@modules/institution/dto/create-institution.dto';
+import { CreateInstitutionDto } from '@modules/institution/dto/create-institution.dto';
 import { ProfileTypes } from '@shared/profile-types.enum';
 import {
   CpfInUseError,
@@ -220,42 +217,41 @@ export class InstitutionRepository {
     data: CreateCollaboratorDto,
     idInstitution: string,
   ): Promise<void> {
-    const institution = this.institutionRepository.findOne({
-      where: { id: idInstitution },
-    });
-
-    if (!institution) {
-      throw new NotFoundException(
-        `Instituição ${idInstitution} não encontrada`,
-      );
-    }
-
     const queryRunner = this.datasource.createQueryRunner();
     queryRunner.connect();
+
     try {
-      await queryRunner.startTransaction();
+      queryRunner.startTransaction();
 
-      const crm = await queryRunner.manager.findOne(Collaborator, {
-        where: { crm: data.crm },
-      });
-      if (crm) {
-        throw new CrmInUseError();
-      }
-
-      const position = await queryRunner.manager.findOne(Collaborator, {
-        where: { position: data.position },
+      const institution = await queryRunner.manager.findOne(Institution, {
+        where: { id: idInstitution },
       });
 
-      const collaboratorEntity: Collaborator = queryRunner.manager.create(
-        Collaborator,
-        {
-          crm: data.crm,
-          position: data.position,
-        },
-      );
+      const profileType = await queryRunner.manager.findOneBy(Profile, {
+        type: ProfileTypes.PROFISSIONAL,
+      });
 
-      await queryRunner.manager.save(collaboratorEntity);
+      const user = queryRunner.manager.create(User, {
+        email: data.email,
+        name: data.name,
+        rg: data.rg,
+        cpf: data.cpf,
+        password: data.password,
+        phone: data.phone,
+        birthDate: data.birthDate,
+        gender: data.gender,
+        bloodType: data.bloodType,
+        profile: profileType,
+      });
+      const savedDataUser = await queryRunner.manager.save(user);
 
+      const collaborator = queryRunner.manager.create(Collaborator, {
+        crm: data.crm,
+        position: data.position,
+        user: savedDataUser,
+        institution: institution,
+      });
+      await queryRunner.manager.save(collaborator);
       await queryRunner.commitTransaction();
     } catch (error) {
       if (queryRunner.isTransactionActive) {
