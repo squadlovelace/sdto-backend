@@ -1,41 +1,64 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <img src="./logo.png" width="200" alt="SDTO Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h2 align="center">SDTO - Sistema de Difusão de Transplantes de Órgãos</h2>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descrição
+Projeto desenvolvido durante o Bootcamp Desenvolvimento Fullstack, promovido pelo [Atlântico Academy Bootcamp](https://www.atlantico.com.br/academy-bootcamp/)
 
-## Description
+## Como executar o projeto?
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Pré-requisitos
 
-## Support
+- [Node.js](https://nodejs.org/en/)
+- [Docker](https://docs.docker.com/engine/)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Banco de dados
+1. Com o Docker instalado, vamos subir o container do banco de dados
+```sh
+$ docker compose -f docker-compose-db.yml up -d
+```
+2. Verificando se o container foi iniciado sem erros. Observar se o `status` está `running`.
+```sh
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+mysql               "docker-entrypoint.s…"   db                  running             0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp
+```
+> Caso não seja possível instalar o Docker, você pode instalar o [MySQL](https://www.mysql.com/) diretamente no SO.
+### Instalação das dependências, variáveis de ambiente e criação das estruturas do banco de dados
+1. Com o banco de dados devidamente provisionado, devemos agora instalar as dependências necessárias para executar o projeto. Para isso digite o comando:
+```sh
+$ npm install
+```
+2. Com as dependências instaladas, devemos configurar o arquivo responsável por manter as variáveis de ambiente. Na raiz do projeto renomei o arquivo `.env-example` para `.env`, se estiver usando um SO Unix Like, no Terminal, basta executar o comando:
+```sh
+$ cp .env-example .env
+```
+3. O arquivo `.env` tem as seguintes variáveis de ambiente, caso o banco de dados esteja rodando em container, altere para os valores de sua preferência.
+```sh
+DB_HOST=  # host do banco de dados
+DB_PORT=  # porta onde o MySQL está sendo executado
+DB_USER=  # usuário do MySQL
+DB_PASS=  # senha do usuário
+DATABASE= # nome do banco de dados
+```
+> Caso o MySQL tenha sido instalado diretamente no SO, setar os valores conforme foram definidos no momento da intalação.
 
-## Stay in touch
+4. O comando abaixo cria as estruturas das tabelas no banco de dados, e popula algumas tabelas com informações necessárias para o projeto.
+```sh
+npm run migrate
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Executando o servidor do projeto e acessando a documentação da API Rest
+1. Comando para executar o projeto
+```sh
+$ npm run start:dev # Ambiente de desenvolvimento
+$ npm run start:prod # Ambiente de produção
+```
+2. Para acessar a documentação, basta no browser digitar o endereço:
+http://localhost:3001/doc
 
+1. Para auxiliar nos testes, dentro da pasta `http` tem um arquivo com todas as rotas. Utilize o client http [Insomnia](https://insomnia.rest/download) para importar o arquivo.
 ## License
 
 Nest is [MIT licensed](LICENSE).
