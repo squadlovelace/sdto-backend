@@ -1,0 +1,6 @@
+node_modules/
+http/
+Dockerfile
+docker-compose-db.yml
+docker-compose.yml
+logo.png
