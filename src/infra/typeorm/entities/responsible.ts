@@ -12,6 +12,6 @@ export class Responsible {
   @Column({ nullable: true, type: 'varchar', length: 64 })
   relationship: string;
 
-  @OneToOne(() => User, (user) => user.responsible)
-  user: User;
+  // @OneToOne(() => User, (user) => user.responsible)
+  // user: User;
 }
