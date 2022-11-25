@@ -64,7 +64,7 @@ export class CreateUserDto {
   responsible: ResponsibleData;
 
   @ApiProperty()
-  organ: string[];
+  organ: string;
 
   @ApiProperty({ type: AddressData })
   address: AddressData;

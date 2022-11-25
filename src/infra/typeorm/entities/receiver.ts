@@ -25,7 +25,7 @@ export class Receiver {
     cascade: true,
   })
   @JoinTable()
-  organ: Organ[];
+  organ: Organ;
 
   @OneToOne(() => User, (user) => user.receiver, {
     nullable: true,

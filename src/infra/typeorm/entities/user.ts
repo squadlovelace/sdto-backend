@@ -80,14 +80,14 @@ export class User {
   })
   collaborator: Collaborator;
 
-  @OneToOne(() => Responsible, (responsible) => responsible.user, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    eager: true,
-    nullable: true,
-  })
-  @JoinColumn()
-  responsible: Responsible;
+  // @OneToOne(() => Responsible, (responsible) => responsible.user, {
+  //   onDelete: 'CASCADE',
+  //   onUpdate: 'CASCADE',
+  //   eager: true,
+  //   nullable: true,
+  // })
+  // @JoinColumn()
+  // responsible: Responsible;
 
   @BeforeInsert()
   private setPassword(password: string) {

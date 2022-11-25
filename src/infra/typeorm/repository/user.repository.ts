@@ -75,32 +75,36 @@ export class UserRepository {
         type: profile,
       });
 
-      const reponsible: Responsible = queryRunner.manager.create(Responsible, {
-        name: input.responsible.name,
-        relationship: input.responsible.relationship,
-      });
-      const savedResponsible = await queryRunner.manager.save(reponsible);
+      // const reponsible: Responsible = queryRunner.manager.create(Responsible, {
+      //   name: input.responsible.name,
+      //   relationship: input.responsible.relationship,
+      // });
+      // const savedResponsible = await queryRunner.manager.save(reponsible);
 
       const userReceiver: User = queryRunner.manager.create(User, {
         ...input,
         profile: profileType,
-        responsible: savedResponsible,
+        // responsible: savedResponsible,
         address: savedAddress,
       });
       const saveUserReceiver = await queryRunner.manager.save(userReceiver);
 
-      const organsToAdd = [];
-      for (const data of input.organ) {
-        const organ = await queryRunner.manager.findOne(Organ, {
-          where: { id: data },
-        });
-        organsToAdd.push(organ);
-      }
+      // const organsToAdd = [];
+      // for (const data of input.organ) {
+      //   const organ = await queryRunner.manager.findOne(Organ, {
+      //     where: { id: data },
+      //   });
+      //   organsToAdd.push(organ);
+      // }
+
+      const organAdd = await queryRunner.manager.findOne(Organ, {
+        where: { name: input.organ },
+      });
 
       const receiver = queryRunner.manager.create(Receiver, {
         comorbidity: input.comorbidity,
         rgct: input.rgct,
-        organ: organsToAdd,
+        organ: organAdd,
         user: saveUserReceiver,
       });
 
@@ -175,22 +179,22 @@ export class UserRepository {
       const userDonor: User = queryRunner.manager.create(User, {
         ...input,
         profile: profileType,
-        responsible: savedResponsible,
+        // responsible: savedResponsible,
         address: savedAddress,
       });
       const saveUserDonor = await queryRunner.manager.save(userDonor);
 
-      const organsToAdd = [];
-      for (const data of input.organ) {
-        const organ = await queryRunner.manager.findOne(Organ, {
-          where: { id: data },
-        });
-        organsToAdd.push(organ);
-      }
+      // const organsToAdd = [];
+      // for (const data of input.organ) {
+      //   const organ = await queryRunner.manager.findOne(Organ, {
+      //     where: { id: data },
+      //   });
+      //   organsToAdd.push(organ);
+      // }
 
       const donor = queryRunner.manager.create(Donor, {
         type: input.type,
-        organ: organsToAdd,
+        // organ: organsToAdd,
         user: saveUserDonor,
       });
 
@@ -274,7 +278,7 @@ export class UserRepository {
         birthDate: user.birthDate,
         gender: user.gender,
         bloodType: user.bloodType,
-        responsible: user.responsible,
+        // responsible: user.responsible,
         address: user.address,
         profile: user.profile,
         receiver: user.receiver,
@@ -326,7 +330,7 @@ export class UserRepository {
       birthDate: user.birthDate,
       gender: user.gender,
       bloodType: user.bloodType,
-      responsible: user.responsible,
+      // responsible: user.responsible,
       address: user.address,
       profile: user.profile,
       receiver: user.receiver,
