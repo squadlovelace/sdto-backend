@@ -40,7 +40,7 @@ export class User {
   @Column({ nullable: false, type: 'varchar', length: 14 })
   phone: string;
 
-  @Column({ nullable: false, type: 'date' })
+  @Column({ nullable: false, type: 'datetime' })
   birthDate: Date;
 
   @Column({ nullable: false, type: 'varchar', length: 64 })
