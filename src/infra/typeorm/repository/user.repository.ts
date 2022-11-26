@@ -170,11 +170,11 @@ export class UserRepository {
         type: profile,
       });
 
-      const reponsible: Responsible = queryRunner.manager.create(Responsible, {
-        name: input.responsible.name,
-        relationship: input.responsible.relationship,
-      });
-      const savedResponsible = await queryRunner.manager.save(reponsible);
+      // const reponsible: Responsible = queryRunner.manager.create(Responsible, {
+      //   name: input.responsible.name,
+      //   relationship: input.responsible.relationship,
+      // });
+      // const savedResponsible = await queryRunner.manager.save(reponsible);
 
       const userDonor: User = queryRunner.manager.create(User, {
         ...input,
@@ -249,13 +249,11 @@ export class UserRepository {
     ]);
     query.leftJoinAndSelect('user.address', 'address');
     query.leftJoinAndSelect('user.profile', 'profile');
-    query.leftJoinAndSelect('user.responsible', 'responsible');
+    // query.leftJoinAndSelect('user.responsible', 'responsible');
     query
       .leftJoinAndSelect('user.receiver', 'receiver')
       .leftJoinAndSelect('receiver.organ', 'organ_receiver');
-    query
-      .leftJoinAndSelect('user.donor', 'donor')
-      .leftJoinAndSelect('donor.organ', 'organ_donor');
+    query.leftJoinAndSelect('user.donor', 'donor');
     query
       .where('profile.type = :profileDonor', {
         profileDonor: ProfileTypes.DONOR,
@@ -308,9 +306,7 @@ export class UserRepository {
     query
       .leftJoinAndSelect('user.receiver', 'receiver')
       .leftJoinAndSelect('receiver.organ', 'organ_receiver');
-    query
-      .leftJoinAndSelect('user.donor', 'donor')
-      .leftJoinAndSelect('donor.organ', 'organ_donor');
+    query.leftJoinAndSelect('user.donor', 'donor');
     query
       .where('profile.type = :profileDonor', {
         profileDonor: ProfileTypes.DONOR,

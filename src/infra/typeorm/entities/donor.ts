@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { DonorType } from '../../../shared/donor-type.enum';
 import { User } from './user';
-import { Organ } from './organ';
+// import { Organ } from './organ';
 
 @Entity()
 export class Donor {
@@ -19,11 +19,11 @@ export class Donor {
   @Column({ type: 'enum', enum: DonorType })
   type: DonorType;
 
-  @ManyToMany(() => Organ, (organ) => organ.donor, {
-    cascade: true,
-  })
-  @JoinTable()
-  organ: Organ[];
+  // @ManyToMany(() => Organ, (organ) => organ.donor, {
+  //   cascade: true,
+  // })
+  // @JoinTable()
+  // organ: Organ[];
 
   @OneToOne(() => User, (user) => user.donor, {
     nullable: true,

@@ -27,7 +27,7 @@ export class GetAllOrganController {
     summary: 'Retorna todos os órgãos cadastrados',
   })
   @ApiResponse({ status: 200, type: GetOrganDto })
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiQuery({
     name: 'page',
     required: false,
@@ -53,7 +53,7 @@ export class GetAllOrganController {
     description: 'busca por nome ou parte do nome',
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll(
     @Query() query: Omit<GetOrganDto, 'id'>,

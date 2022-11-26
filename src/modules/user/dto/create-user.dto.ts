@@ -60,8 +60,8 @@ export class CreateUserDto {
   @ApiProperty({ type: 'enum', enum: BloodTypes })
   bloodType: BloodTypes;
 
-  @ApiProperty({ type: ResponsibleData })
-  responsible: ResponsibleData;
+  // @ApiProperty({ type: ResponsibleData })
+  // responsible: ResponsibleData;
 
   @ApiProperty()
   organ: string;
